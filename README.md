@@ -10,7 +10,7 @@
 
 ## Description
 
-Zigbee API base on [Nest](https://github.com/nestjs/nest) framework inspired by [zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt)
+Zigbee API base on [Nest](https://github.com/nestjs/nest) framework inspired by [zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt).
 
 ## Installation
 
@@ -54,7 +54,7 @@ $ npm run test:cov
 ```
 
 ## Supported devices
-See [Supported devices] on Zigbee2mqtt documentation (https://koenkk.github.io/zigbee2mqtt/information/supported_devices.html) to check whether your device is supported. There is quite an extensive list, including devices from vendors like Xiaomi, Ikea, Philips, OSRAM and more.
+See [Supported devices](https://koenkk.github.io/zigbee2mqtt/information/supported_devices.html) on Zigbee2mqtt documentation to check whether your device is supported. There is quite an extensive list, including devices from vendors like Xiaomi, Ikea, Philips, OSRAM and more.
 
 ## License
 
