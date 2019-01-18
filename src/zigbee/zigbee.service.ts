@@ -3,6 +3,7 @@ import * as zShepherdConverters from 'zigbee-shepherd-converters';
 import { get } from 'lodash';
 
 import { Shepherd } from './shepherd.factory';
+import { async } from 'rxjs/internal/scheduler/async';
 
 type Device = any;
 
@@ -15,6 +16,7 @@ export class ZigbeeService {
         // console.log('Shepherd', shepherd.controller);
         shepherd.start(this.start);
         shepherd.on('error', this.error);
+        shepherd.on('ind', this.onInd);
     }
 
     start = async (error: Error) => {
@@ -38,15 +40,10 @@ export class ZigbeeService {
     }
 
     onInd = (message: any) => {
-        // console.log('ind', message);
         this.logger.log(`> ind: ${message.type}`);
 
         if (message.type === 'devIncoming') {
-            const device: Device = message.endpoints[0].device;
-            const ieeeAddr = device.ieeeAddr;
-
-            this.logger.log(`devIncoming, new device ${ieeeAddr}`);
-            this.attachDevice(device);
+            this.devIncoming(message);
         } else if (message.type === 'attReport') {
             this.loadMessage(message);
         }
@@ -54,6 +51,17 @@ export class ZigbeeService {
 
     getDevices() {
         return this.shepherd.list().filter((device: any) => device.type !== 'Coordinator');
+    }
+
+    devIncoming(message: any) {
+        const device: Device = get(message, 'endpoints[0].device');
+        if (device) {
+            const ieeeAddr = device.ieeeAddr;
+            this.logger.log(`devIncoming, new device ${ieeeAddr}`);
+            this.attachDevice(device);
+        } else {
+            this.logger.error('devIncoming without device');
+        }
     }
 
     loadMessage(message: any) {

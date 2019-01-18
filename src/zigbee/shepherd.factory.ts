@@ -10,6 +10,7 @@ export interface Shepherd {
     on: any;
     list: any;
     find: any;
+    permitJoin: any;
 }
 
 export const shepherdFactory = {
@@ -25,6 +26,12 @@ export const shepherdFactory = {
         shepherd.on('ZNP:CLOSE', () => {
             logger.log('ZNP:CLOSE exit app!');
             process.exit();
+        });
+        shepherd.on('ready', async () => {
+            logger.log('Server is ready.');
+            const time = parseInt(config.get('ZIGBEE_PERMIT_JOIN'), 10);
+            await shepherd.permitJoin(time || 255);
+            logger.log('Waiting for device');
         });
         return shepherd;
     },
