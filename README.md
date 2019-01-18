@@ -1,6 +1,6 @@
 ## Description
 
-Zigbee API base on [Nest](https://github.com/nestjs/nest) inspired by [zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt)
+Zigbee API base on [Nest](https://github.com/nestjs/nest) framework inspired by [zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt)
 
 ## Installation
 
