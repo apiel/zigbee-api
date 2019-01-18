@@ -12,21 +12,18 @@ export class ZigbeeService {
     private readonly logger = new Logger(ZigbeeService.name);
 
     constructor(@Inject('Shepherd') private shepherd: Shepherd) {
-        // console.log('Shepherd', shepherd.acceptDevIncoming);
-        // console.log('Shepherd', shepherd.controller);
         shepherd.start(this.start);
         shepherd.on('error', this.error);
         shepherd.on('ind', this.onInd);
     }
 
-    start = async (error: Error) => {
+    protected start = async (error: Error) => {
         if (error) {
             this.logger.error('Error when starting zigbee service. Exit process!', JSON.stringify(error));
             process.exit();
         }
         this.logger.log('Start zigbee');
 
-        // now attachDevices
         const devices = this.getDevices();
         this.logger.log(`Zigbee devices: ${JSON.stringify(devices, null, 4)}`);
 
@@ -35,11 +32,11 @@ export class ZigbeeService {
         });
     }
 
-    error = (error: Error) => {
+    protected error = (error: Error) => {
         this.logger.error(error);
     }
 
-    onInd = (message: any) => {
+    protected onInd = (message: any) => {
         this.logger.log(`> ind: ${message.type}`);
 
         if (message.type === 'devIncoming') {
@@ -53,7 +50,7 @@ export class ZigbeeService {
         return this.shepherd.list().filter((device: any) => device.type !== 'Coordinator');
     }
 
-    devIncoming(message: any) {
+    protected devIncoming(message: any) {
         const device: Device = get(message, 'endpoints[0].device');
         if (device) {
             const ieeeAddr = device.ieeeAddr;
@@ -64,7 +61,7 @@ export class ZigbeeService {
         }
     }
 
-    loadMessage(message: any) {
+    protected loadMessage(message: any) {
         const device = get(message, 'endpoints[0].device');
         const cid = get(message, 'data.cid');
         const cmdId = get(message, 'data.cmdId');
@@ -86,7 +83,7 @@ export class ZigbeeService {
         }
     }
 
-    attachDevice(device: Device) {
+    protected attachDevice(device: Device) {
         const mappedModel = zShepherdConverters.findByZigbeeModel(device.modelId);
         if (mappedModel) {
             if (mappedModel.configure) {
