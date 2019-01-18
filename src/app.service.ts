@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from './config/config.service';
+import { ZigbeeService } from './zigbee/zigbee.service';
 
 @Injectable()
 export class AppService {
-  constructor(config: ConfigService) {
-    console.log('SERIAL_PATH', config.get('SERIAL_PATH'));
-  }
+  constructor(private zigbeeService: ZigbeeService) {}
 
   getHello(): string {
     return 'Hello World!';

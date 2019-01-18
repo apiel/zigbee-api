@@ -4,8 +4,8 @@ import { shepherdFactory } from './shepherd.factory';
 import { ConfigModule } from 'src/config/config.module';
 
 @Module({
-  providers: [ZigbeeService, shepherdFactory],
-  // exports: [shepherdFactory],
-  imports: [ConfigModule],
+    providers: [ZigbeeService, shepherdFactory],
+    imports: [ConfigModule],
+    exports: [ZigbeeService],
 })
 export class ZigbeeModule {}
