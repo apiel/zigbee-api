@@ -9,6 +9,7 @@ export interface Shepherd {
     start: any; // (callback: () => void) => void;
     on: any;
     list: any;
+    find: any;
 }
 
 export const shepherdFactory = {
