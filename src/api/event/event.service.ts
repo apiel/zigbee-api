@@ -19,6 +19,7 @@ export class EventService {
         // zigbeeService.on(eventType.ind, console.log);
         zigbeeService.on(eventType.indMessage, this.onEvent(eventType.indMessage));
         zigbeeService.on(eventType.devIncoming, this.onEvent(eventType.devIncoming));
+        zigbeeService.on(eventType.afIncomingMsg, this.onEvent(eventType.afIncomingMsg));
     }
 
     onEvent = (type: string) => (payload: any) => {

@@ -1,5 +1,6 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import * as zShepherdConverters from 'zigbee-shepherd-converters';
+import * as zclPacket from 'zcl-packet';
 import { get } from 'lodash';
 import { EventEmitter } from 'events';
 
@@ -15,6 +16,7 @@ export const eventType = {
     devIncoming: messageType.devIncoming,
     ind: 'ind',
     indMessage: 'indMessage',
+    afIncomingMsg: 'afIncomingMsg',
 };
 
 @Injectable()
@@ -90,8 +92,6 @@ export class ZigbeeService extends EventEmitter {
             converters.forEach((converter: any) => {
                 const data = converter.convert(mappedModel, message, null, device);
                 const cmd = cid || cmdId;
-                // ToDO
-                // onIndMessage(device, data, cmd);
                 this.emit(eventType.indMessage, { data, cmd });
             });
         }
@@ -112,10 +112,18 @@ export class ZigbeeService extends EventEmitter {
                 );
             }
             if (mappedModel.onAfIncomingMsg) {
-                // ToDo
-                // mappedModel.onAfIncomingMsg.forEach((epId) => registerOnAfIncomingMsg(device.ieeeAddr, epId));
+                mappedModel.onAfIncomingMsg.forEach((epId: number) => this.registerOnAfIncomingMsg(device.ieeeAddr, epId));
             }
         }
+    }
+
+    protected registerOnAfIncomingMsg = (addr: string, epId: number) => {
+        const ep = this.shepherd.find(addr, epId);
+        ep.onAfIncomingMsg = async (message: any) => {
+            const data = await zclPacket.parse(message.data, message.clusterid);
+            this.emit(eventType.afIncomingMsg, { addr, data });
+            // maybe we should try and catch error?
+        };
     }
 
     getCoordinator() {
