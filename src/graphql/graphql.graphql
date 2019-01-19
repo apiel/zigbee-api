@@ -4,6 +4,10 @@ type Query {
     getEvents: [EventItem]
 }
 
+type Mutation {
+    sendAction(addr: ID!, action: String!): String
+}
+
 type Device {
     type: String
     ieeeAddr: String

@@ -1,4 +1,4 @@
-import { Query, Resolver, Args } from '@nestjs/graphql';
+import { Query, Resolver, Args, Mutation } from '@nestjs/graphql';
 import { DeviceService, Device } from 'src/zigbee/device/device.service';
 import { EventService } from 'src/event/event.service';
 import { EventItem } from 'types/graphql.schema';
@@ -28,6 +28,13 @@ export class GraphqlResolver {
             time: item.time.toString(),
         }));
     }
+
+    @Mutation()
+    async sendAction(@Args('addr') addr: string, @Args('action') action: string): Promise<string> {
+        const data = JSON.parse(action);
+        const response = await this.deviceService.sendAction({ ...data, addr });
+        return JSON.stringify(response);
+    }
 }
 
 // {
@@ -48,4 +55,11 @@ export class GraphqlResolver {
 //       payload
 //       time
 //     }
+//   }
+
+// mutation {
+//     sendAction(
+//       addr: "0xd0cf5efffe3070a1"
+//       action: "{\"action\": {\"state\": \"on\"}, \"type\": \"set\"}"
+//     )
 //   }

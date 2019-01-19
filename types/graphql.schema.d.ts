@@ -18,9 +18,17 @@ export class EventItem {
     time?: string;
 }
 
+export abstract class IMutation {
+    abstract sendAction(addr: string, action: string): string | Promise<string>;
+}
+
 export abstract class IQuery {
     abstract getDevices(): Device[] | Promise<Device[]>;
     abstract device(addr: string): Device | Promise<Device>;
     abstract getEvents(): EventItem[] | Promise<EventItem[]>;
     abstract temp__(): boolean | Promise<boolean>;
+}
+
+export class Response {
+    response?: string;
 }
