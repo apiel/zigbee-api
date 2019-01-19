@@ -7,7 +7,6 @@ import { ConfigModule } from './config/config.module';
 import { ZigbeeModule } from './zigbee/zigbee.module';
 import { ApiModule } from './api/api.module';
 import { GraphqlModule } from './graphql/graphql.module';
-import { CatsModule } from './cats/cats.module';
 
 @Module({
     imports: [
@@ -23,7 +22,6 @@ import { CatsModule } from './cats/cats.module';
             },
         }),
         GraphqlModule,
-        CatsModule,
     ],
     controllers: [AppController],
     providers: [AppService, ConfigService],
