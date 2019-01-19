@@ -29,6 +29,6 @@ export abstract class IQuery {
     abstract temp__(): boolean | Promise<boolean>;
 }
 
-export class Response {
-    response?: string;
+export abstract class ISubscription {
+    abstract events(): EventItem | Promise<EventItem>;
 }

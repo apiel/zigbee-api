@@ -8,6 +8,16 @@ type Mutation {
     sendAction(addr: ID!, action: String!): String
 }
 
+type Subscription {
+    events: EventItem
+}
+
+type EventItem {
+    type: String
+    payload: String
+    time: String
+}
+
 type Device {
     type: String
     ieeeAddr: String
@@ -19,10 +29,4 @@ type Device {
     epList: [Int]
     status: String
     joinTime: Int
-}
-
-type EventItem {
-    type: String
-    payload: String
-    time: String
 }

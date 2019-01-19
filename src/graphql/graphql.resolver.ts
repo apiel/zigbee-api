@@ -1,14 +1,32 @@
-import { Query, Resolver, Args, Mutation } from '@nestjs/graphql';
+import { Query, Resolver, Args, Mutation, Subscription } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
+
 import { DeviceService, Device } from 'src/zigbee/device/device.service';
 import { EventService } from 'src/event/event.service';
 import { EventItem } from 'types/graphql.schema';
+import { ZigbeeService, eventType } from 'src/zigbee/zigbee.service';
+
+const pubSub = new PubSub();
 
 @Resolver('Graphql')
 export class GraphqlResolver {
     constructor(
         private readonly deviceService: DeviceService,
         private readonly eventService: EventService,
-    ) {}
+        private readonly zigbeeService: ZigbeeService,
+    ) {
+        zigbeeService.on(eventType.indMessage, this.onEvent(eventType.indMessage));
+        zigbeeService.on(eventType.devIncoming, this.onEvent(eventType.devIncoming));
+        zigbeeService.on(eventType.afIncomingMsg, this.onEvent(eventType.afIncomingMsg));
+    }
+
+    onEvent = (type: string) => (payload: any) => {
+        pubSub.publish('events', {
+            type,
+            payload: JSON.stringify(payload),
+            time: (new Date()).toString(),
+        });
+    }
 
     @Query()
     getDevices(): Device[] {
@@ -34,6 +52,13 @@ export class GraphqlResolver {
         const data = JSON.parse(action);
         const response = await this.deviceService.sendAction({ ...data, addr });
         return JSON.stringify(response);
+    }
+
+    @Subscription()
+    events() {
+        return {
+            subscribe: () => pubSub.asyncIterator('events'),
+        };
     }
 }
 

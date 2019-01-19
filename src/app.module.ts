@@ -17,6 +17,7 @@ import { EventModule } from './event/event.module';
         GraphQLModule.forRoot({
             typePaths: ['./**/*.graphql'],
             // include: [GraphqlModule, GraphModule],
+            installSubscriptionHandlers: true,
             definitions: {
                 path: `${__dirname}/../types/graphql.schema.d.ts`,
                 outputAs: 'class',
