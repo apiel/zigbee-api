@@ -1,7 +1,0 @@
-type Query {
-  devices: [Device]
-}
-
-type Device {
-  ieeeAddr: String
-}

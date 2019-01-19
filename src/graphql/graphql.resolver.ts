@@ -10,6 +10,7 @@ export class GraphqlResolver {
 
     @Query()
     devices(): Device[] {
-      return this.deviceService.getDevices();
+        console.log('was bal');
+        return this.deviceService.getDevices();
     }
 }

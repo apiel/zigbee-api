@@ -7,8 +7,7 @@ import { ConfigModule } from './config/config.module';
 import { ZigbeeModule } from './zigbee/zigbee.module';
 import { ApiModule } from './api/api.module';
 import { GraphqlModule } from './graphql/graphql.module';
-import { GraphModule } from './graph/graph.module';
-
+import { CatsModule } from './cats/cats.module';
 
 @Module({
     imports: [
@@ -17,9 +16,14 @@ import { GraphModule } from './graph/graph.module';
         ApiModule,
         GraphQLModule.forRoot({
             typePaths: ['./**/*.graphql'],
+            // include: [GraphqlModule, GraphModule],
+            definitions: {
+                path: `${__dirname}/../types/graphql.schema.d.ts`,
+                outputAs: 'class',
+            },
         }),
         GraphqlModule,
-        GraphModule,
+        CatsModule,
     ],
     controllers: [AppController],
     providers: [AppService, ConfigService],
