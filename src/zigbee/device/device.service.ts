@@ -15,6 +15,12 @@ export interface DeviceModel extends DeviceEndPoint {
     mappedModel: any;
 }
 
+export interface Action {
+    addr: string;
+    action: any;
+    type: 'set' | 'get';
+}
+
 @Injectable()
 export class DeviceService {
     private readonly logger = new Logger(DeviceService.name);
@@ -33,7 +39,7 @@ export class DeviceService {
         return device;
     }
 
-    sendAction(addr: string, action: any, type = 'set') {
+    sendAction({ addr, action, type = 'set' }: Action) {
         const { device, mappedModel, epId } = this.getMappedModel(addr);
         Object.keys(action).forEach((key) => {
             const converter = mappedModel.toZigbee.find((c) => c.key.includes(key));
@@ -50,11 +56,12 @@ export class DeviceService {
         });
     }
 
-    sendMessage(device: Device, epId: number, message: any) { // we could use promise instead
+    // Need to transform this in promise
+    sendMessage(device: Device, epId: number, message: any) {
         const callback = (error: Error, rsp: any) => {
-            // console.log('change state done', rsp, 'with error:', error);
+            console.log('change state done', rsp, 'with error:', error);
             if (error) {
-                this.logger.error(error);
+                this.logger.error(error.message);
             } else {
                 this.logger.log('change state done');
             }
