@@ -12,8 +12,15 @@ export class Device {
     joinTime?: number;
 }
 
+export class EventItem {
+    type?: string;
+    payload?: string;
+    time?: string;
+}
+
 export abstract class IQuery {
     abstract getDevices(): Device[] | Promise<Device[]>;
     abstract device(addr: string): Device | Promise<Device>;
+    abstract getEvents(): EventItem[] | Promise<EventItem[]>;
     abstract temp__(): boolean | Promise<boolean>;
 }

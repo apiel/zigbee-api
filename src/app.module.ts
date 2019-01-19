@@ -7,6 +7,7 @@ import { ConfigModule } from './config/config.module';
 import { ZigbeeModule } from './zigbee/zigbee.module';
 import { ApiModule } from './api/api.module';
 import { GraphqlModule } from './graphql/graphql.module';
+import { EventModule } from './event/event.module';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { GraphqlModule } from './graphql/graphql.module';
             },
         }),
         GraphqlModule,
+        EventModule,
     ],
     controllers: [AppController],
     providers: [AppService, ConfigService],

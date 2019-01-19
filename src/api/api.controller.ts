@@ -2,7 +2,7 @@ import { Controller, Get, Param, Res, HttpStatus, Post, Body } from '@nestjs/com
 import { DeviceService, Device, DeviceModel } from '../zigbee/device/device.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { ApiActionDto } from './api.action.dto';
-import { EventService, ListItem } from './event/event.service';
+import { EventService, EventItem } from 'src/event/event.service';
 
 @Controller('api')
 export class ApiController {
@@ -31,7 +31,7 @@ export class ApiController {
 
     @ApiOkResponse({ description: 'Get the list of events.'})
     @Get('events')
-    getEvents(): ListItem[] {
+    getEvents(): EventItem[] {
         return this.eventService.get();
     }
 }
