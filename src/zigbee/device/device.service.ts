@@ -39,41 +39,41 @@ export class DeviceService {
         return device;
     }
 
-    sendAction({ addr, action, type = 'set' }: Action) {
+    sendAction({ addr, action, type = 'set' }: Action): Promise<any> {
         const { device, mappedModel, epId } = this.getMappedModel(addr);
-        Object.keys(action).forEach((key) => {
-            const converter = mappedModel.toZigbee.find((c) => c.key.includes(key));
-            if (!converter) {
-                this.logger.log(`No converter available for '${key}' (${action[key]})`, mappedModel.toZigbee);
-                return;
-            }
-            const message = converter.convert(key, action[key], action, type); // we might have to handle null as message
-            if (!message) {
-                this.logger.warn('No message');
-                return;
-            }
-            this.sendMessage(device, epId, message);
-        });
+        return Promise.all(
+            Object.keys(action).map((key) => {
+                const converter = mappedModel.toZigbee.find((c) => c.key.includes(key));
+                if (!converter) {
+                    throw new Error(`No converter available for '${key}' (${action[key]})`);
+                }
+                const message = converter.convert(key, action[key], action, type); // we might have to handle null as message
+                if (!message) {
+                    throw new Error('No message available to send action');
+                }
+                return this.sendMessage(device, epId, message);
+            }),
+        );
     }
 
-    // Need to transform this in promise
-    sendMessage(device: Device, epId: number, message: any) {
-        const callback = (error: Error, rsp: any) => {
-            console.log('change state done', rsp, 'with error:', error);
-            if (error) {
-                this.logger.error(error.message);
+    sendMessage(device: Device, epId: number, message: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const callback = (error: Error, response: any) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(response);
+                }
+            };
+            const ep = this.shepherd.find(device.ieeeAddr, epId);
+            if (message.cmdType === 'functional') {
+                ep.functional(message.cid, message.cmd, message.zclData, callback);
+            } else if (message.cmdType === 'foundation') {
+                ep.foundation(message.cid, message.cmd, [message.zclData], callback);
             } else {
-                this.logger.log('change state done');
+                reject(`Unknown zigbee publish type ${message.type}`);
             }
-        };
-        const ep = this.shepherd.find(device.ieeeAddr, epId);
-        if (message.cmdType === 'functional') {
-            ep.functional(message.cid, message.cmd, message.zclData, callback);
-        } else if (message.cmdType === 'foundation') {
-            ep.foundation(message.cid, message.cmd, [message.zclData], callback);
-        } else {
-            this.logger.error(`Unknown zigbee publish type ${message.type}`);
-        }
+        });
     }
 
     getMappedModel(addr: string): DeviceModel {

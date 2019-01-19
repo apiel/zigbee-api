@@ -22,9 +22,9 @@ export class ApiController {
 
     @ApiOkResponse({ description: 'Send action to device.'})
     @Post('devices/:addr/action')
-    sendAction(@Param('addr') addr: string, @Body() action: ApiActionDto): string {
-        // return this.deviceService.sendAction({ ...action, addr });
-        this.deviceService.sendAction({ ...action, addr });
-        return 'ok';
+    sendAction(@Param('addr') addr: string, @Body() action: ApiActionDto): Promise<any> {
+        return this.deviceService.sendAction({ ...action, addr });
+        // this.deviceService.sendAction({ ...action, addr });
+        // return 'ok';
     }
 }
