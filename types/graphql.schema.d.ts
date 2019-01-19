@@ -14,5 +14,6 @@ export class Device {
 
 export abstract class IQuery {
     abstract getDevices(): Device[] | Promise<Device[]>;
+    abstract device(addr: string): Device | Promise<Device>;
     abstract temp__(): boolean | Promise<boolean>;
 }

@@ -1,5 +1,6 @@
 type Query {
     getDevices: [Device]
+    device(addr: ID!): Device
 }
 
 type Device {
