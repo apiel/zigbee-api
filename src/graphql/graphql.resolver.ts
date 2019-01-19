@@ -21,11 +21,12 @@ export class GraphqlResolver {
     }
 
     onEvent = (type: string) => (payload: any) => {
-        pubSub.publish('events', {
+        const events = {
             type,
             payload: JSON.stringify(payload),
             time: (new Date()).toString(),
-        });
+        };
+        pubSub.publish('events', { events });
     }
 
     @Query()
