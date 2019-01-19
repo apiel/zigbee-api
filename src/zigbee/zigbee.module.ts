@@ -7,6 +7,6 @@ import { DeviceService } from './device/device.service';
 @Module({
     providers: [ZigbeeService, shepherdFactory, DeviceService],
     imports: [ConfigModule],
-    exports: [ZigbeeService],
+    exports: [ZigbeeService, DeviceService],
 })
 export class ZigbeeModule {}

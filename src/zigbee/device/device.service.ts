@@ -2,8 +2,18 @@ import { Injectable, Logger, Inject } from '@nestjs/common';
 import * as zShepherdConverters from 'zigbee-shepherd-converters';
 
 import { Shepherd } from '../shepherd.factory';
+import { DeviceNotFound } from './device.error';
 
 export type Device = any;
+
+export interface DeviceEndPoint {
+    device: Device;
+    epId: number;
+}
+
+export interface DeviceModel extends DeviceEndPoint {
+    mappedModel: any;
+}
 
 @Injectable()
 export class DeviceService {
@@ -13,6 +23,14 @@ export class DeviceService {
 
     getDevices() {
         return this.shepherd.list().filter((device: any) => device.type !== 'Coordinator');
+    }
+
+    getDevice(addr: string) {
+        const device = this.shepherd.list().find((d: Device) => d.ieeeAddr === addr);
+        if (!device) {
+            throw new DeviceNotFound(`Failed to find device with ID ${addr}`);
+        }
+        return device;
     }
 
     sendAction(addr: string, action: any, type = 'set') {
@@ -51,7 +69,7 @@ export class DeviceService {
         }
     }
 
-    protected getMappedModel(addr: string) {
+    getMappedModel(addr: string): DeviceModel {
         const { device, epId } = this.getEndPoint(addr);
         const mappedModel = zShepherdConverters.findByZigbeeModel(device.modelId);
         if (!mappedModel) {
@@ -61,17 +79,9 @@ export class DeviceService {
         return { device, mappedModel, epId };
     }
 
-    getEndPoint(addr: string) {
+    getEndPoint(addr: string): DeviceEndPoint {
         const device = this.getDevice(addr);
         const epId = device.epList[0];
         return {device, epId };
-    }
-
-    getDevice(addr: string) {
-        const device = this.shepherd.list().find((d: Device) => d.ieeeAddr === addr);
-        if (!device) {
-            throw new Error(`Failed to find device with deviceID ${addr}`);
-        }
-        return device;
     }
 }
