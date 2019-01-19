@@ -7,8 +7,7 @@ export interface ListItem {
     time: Date;
 }
 
-// const FIVE_MIN = 5 * 60 * 1000;
-const FIVE_MIN = 10 * 1000; // 10 sec for testing
+const FIVE_MIN = 5 * 60 * 1000;
 
 @Injectable()
 export class EventService {
