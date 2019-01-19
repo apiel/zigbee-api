@@ -1,18 +1,31 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import * as zShepherdConverters from 'zigbee-shepherd-converters';
 import { get } from 'lodash';
+import { EventEmitter } from 'events';
 
 import { Shepherd } from './shepherd.factory';
 import { Device, DeviceService } from './device/device.service';
 
+export const messageType = {
+    devIncoming: 'devIncoming',
+    attReport: 'attReport',
+};
+
+export const eventType = {
+    devIncoming: messageType.devIncoming,
+    ind: 'ind',
+    indMessage: 'indMessage',
+};
+
 @Injectable()
-export class ZigbeeService {
+export class ZigbeeService extends EventEmitter {
     private readonly logger = new Logger(ZigbeeService.name);
 
     constructor(
         @Inject('Shepherd') private shepherd: Shepherd,
         private deviceService: DeviceService,
     ) {
+        super();
         shepherd.start(this.start);
         shepherd.on('error', this.error);
         shepherd.on('ind', this.onInd);
@@ -39,10 +52,11 @@ export class ZigbeeService {
 
     protected onInd = (message: any) => {
         this.logger.log(`> ind: ${message.type}`);
+        this.emit(eventType.ind, message);
 
-        if (message.type === 'devIncoming') {
+        if (message.type === messageType.devIncoming) {
             this.devIncoming(message);
-        } else if (message.type === 'attReport') {
+        } else if (message.type === messageType.attReport) {
             this.loadMessage(message);
         }
     }
@@ -50,8 +64,9 @@ export class ZigbeeService {
     protected devIncoming(message: any) {
         const device: Device = get(message, 'endpoints[0].device');
         if (device) {
-            const ieeeAddr = device.ieeeAddr;
-            this.logger.log(`devIncoming, new device ${ieeeAddr}`);
+            const addr = device.ieeeAddr;
+            this.logger.log(`devIncoming, new device ${addr}`);
+            this.emit(eventType.devIncoming, { addr });
             this.attachDevice(device);
         } else {
             this.logger.error('devIncoming without device');
@@ -73,9 +88,11 @@ export class ZigbeeService {
                 return false;
             });
             converters.forEach((converter: any) => {
-                const payload = converter.convert(mappedModel, message, null, device);
+                const data = converter.convert(mappedModel, message, null, device);
+                const cmd = cid || cmdId;
                 // ToDO
-                // onIndMessage(device, payload, cid || cmdId);
+                // onIndMessage(device, data, cmd);
+                this.emit(eventType.indMessage, { data, cmd });
             });
         }
     }
@@ -105,7 +122,4 @@ export class ZigbeeService {
         const device = this.shepherd.list().find((d: Device) => d.type === 'Coordinator');
         return this.shepherd.find(device.ieeeAddr, 1);
     }
-
-    // might move all the following code to DeviceService
-
 }
