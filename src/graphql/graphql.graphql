@@ -1,7 +1,16 @@
 type Query {
-  devices: [Device]
+    getDevices: [Device]
 }
 
 type Device {
-  ieeeAddr: String
+    type: String
+    ieeeAddr: String
+    nwkAddr: Int
+    manufId: Int
+    manufName: String
+    powerSource: String
+    modelId: String
+    epList: [Int]
+    status: String
+    joinTime: Int
 }

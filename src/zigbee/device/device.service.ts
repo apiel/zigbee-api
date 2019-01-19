@@ -4,7 +4,19 @@ import * as zShepherdConverters from 'zigbee-shepherd-converters';
 import { Shepherd } from '../shepherd.factory';
 import { DeviceNotFound } from './device.error';
 
-export type Device = any;
+// export type Device = any;
+export interface Device {
+    type: string;
+    ieeeAddr: string;
+    nwkAddr: number;
+    manufId: number;
+    manufName: string;
+    powerSource: string;
+    modelId: string;
+    epList: number[];
+    status: string;
+    joinTime: number;
+}
 
 export interface DeviceEndPoint {
     device: Device;

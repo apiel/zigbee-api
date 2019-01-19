@@ -8,8 +8,7 @@ export class GraphqlResolver {
     ) {}
 
     @Query()
-    devices(): Device[] {
-        console.log('was bal');
+    getDevices(): Device[] {
         return this.deviceService.getDevices();
     }
 }
