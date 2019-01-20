@@ -17,6 +17,7 @@ export const eventType = {
     ind: 'ind',
     indMessage: 'indMessage',
     afIncomingMsg: 'afIncomingMsg',
+    devices: 'devices',
 };
 
 @Injectable()
@@ -42,6 +43,7 @@ export class ZigbeeService extends EventEmitter {
 
         const devices = this.deviceService.getDevices();
         this.logger.log(`Zigbee devices: ${JSON.stringify(devices, null, 4)}`);
+        this.emit(eventType.devices, { devices });
 
         devices.forEach((device: Device) => {
             this.attachDevice(device);
