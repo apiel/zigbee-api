@@ -129,3 +129,7 @@ subscription {
 ```
 
 Read more about the GraphqQL subscriptions [here](https://www.apollographql.com/docs/graphql-subscriptions/).
+
+## Microservice
+
+Nest framework provide a micro-servive interface. It provide multiple communication protocole like TCP, MQTT, AMQP with RabbitMQ, Redis pub/sub... For more information look at the [nest documentation](https://docs.nestjs.com/microservices/basics).
