@@ -4,7 +4,16 @@ import * as zShepherdConverters from 'zigbee-shepherd-converters';
 import { Shepherd } from '../shepherd.factory';
 import { DeviceNotFound } from './device.error';
 
-// export type Device = any;
+export interface MappedModel {
+    zigbeeModel: string[];
+    model: string;
+    description: string;
+    supports: string;
+    vendor: string;
+    fromZigbee: [{ cid: string, type: string }];
+    toZigbee: any;
+}
+
 export interface Device {
     type: string;
     ieeeAddr: string;
@@ -24,7 +33,7 @@ export interface DeviceEndPoint {
 }
 
 export interface DeviceModel extends DeviceEndPoint {
-    mappedModel: any;
+    mappedModel: MappedModel;
 }
 
 export interface Action {

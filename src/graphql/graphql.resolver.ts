@@ -3,7 +3,7 @@ import { PubSub } from 'graphql-subscriptions';
 
 import { DeviceService, Device } from 'src/zigbee/device/device.service';
 import { EventService } from 'src/event/event.service';
-import { EventItem } from 'types/graphql.schema';
+// import { EventItem, DeviceConfig } from 'types/graphql.schema';
 import { ZigbeeService, eventType } from 'src/zigbee/zigbee.service';
 
 const pubSub = new PubSub();
@@ -40,7 +40,16 @@ export class GraphqlResolver {
     }
 
     @Query()
-    getEvents(): EventItem[] {
+    getDeviceConfig(@Args('addr') addr: string) /*: DeviceConfig*/ {
+      const mappedModel = this.deviceService.getMappedModel(addr);
+      return {
+          device: mappedModel.device,
+          config: JSON.stringify(mappedModel.mappedModel),
+      };
+    }
+
+    @Query()
+    getEvents() /*: EventItem[]*/ {
         return this.eventService.get().map(item => ({
             ...item,
             payload: JSON.stringify(item.payload),
@@ -95,5 +104,16 @@ export class GraphqlResolver {
 //       type
 //       payload
 //       time
+//     }
+//   }
+
+//   {
+//     getDeviceConfig(addr: "0xd0cf5efffe3070a1") {
+//       device {
+//         type
+//         ieeeAddr
+//         modelId
+//       }
+//       config
 //     }
 //   }

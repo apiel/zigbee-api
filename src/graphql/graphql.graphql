@@ -1,6 +1,7 @@
 type Query {
     getDevices: [Device]
     device(addr: ID!): Device
+    getDeviceConfig(addr: ID!): DeviceConfig
     getEvents: [EventItem]
 }
 
@@ -29,4 +30,9 @@ type Device {
     epList: [Int]
     status: String
     joinTime: Int
+}
+
+type DeviceConfig {
+    device: Device
+    config: String
 }

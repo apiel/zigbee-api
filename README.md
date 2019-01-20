@@ -93,6 +93,20 @@ From there you can try your GraphQL queries:
 }
 ```
 
+- to get device config information
+```
+{
+  getDeviceConfig(addr: "0xd0cf5efffe3070a1") {
+    device {
+      type
+      ieeeAddr
+      modelId
+    }
+    config
+  }
+}
+```
+
 - to get the list of events from the last 5 minutes
 
 ```

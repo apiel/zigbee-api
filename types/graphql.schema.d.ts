@@ -12,6 +12,11 @@ export class Device {
     joinTime?: number;
 }
 
+export class DeviceConfig {
+    device?: Device;
+    config?: string;
+}
+
 export class EventItem {
     type?: string;
     payload?: string;
@@ -25,6 +30,7 @@ export abstract class IMutation {
 export abstract class IQuery {
     abstract getDevices(): Device[] | Promise<Device[]>;
     abstract device(addr: string): Device | Promise<Device>;
+    abstract getDeviceConfig(addr: string): DeviceConfig | Promise<DeviceConfig>;
     abstract getEvents(): EventItem[] | Promise<EventItem[]>;
     abstract temp__(): boolean | Promise<boolean>;
 }
