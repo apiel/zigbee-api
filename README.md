@@ -40,6 +40,23 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## REST API
+
+After running the application under the port 3000. There is build-in documentation, using standard OpenAPI Specification. To access it, go to the url http://127.0.0.1:3000/docs . 
+
+![swagger documentation](docs/images/swagger.png)
+
+From this user interface, you can run some test queries, for example to change the state of a device:
+
+![swagger tryout](docs/images/swagger_tryout.png)
+
+**Available queries:**
+
+- `GET /api/devices` Get the list of registered devices.
+- `GET /api/devices/{addr}` Get the details of a device, where `addr` is the address of the device, for example `0xd0cf5efffe3070a1`.
+- `GET /api/events` Get the list of events from the last 5 minutes, for example new device incoming or messages receive from a remote.
+- `POST /api/devices/{addr}/action` Send an action to a device, where `addr` is the address of the device and the request body should contain the command in JSON format, for example `{ "action": { "state": "on" }, "type": "set" }`
+
 ## Test
 
 ```bash

@@ -89,3 +89,11 @@ export class GraphqlResolver {
 //       action: "{\"action\": {\"state\": \"on\"}, \"type\": \"set\"}"
 //     )
 //   }
+
+// subscription {
+//     events {
+//       type
+//       payload
+//       time
+//     }
+//   }
