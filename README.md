@@ -53,17 +53,17 @@ $ npm run start:prod
 
 There is build-in documentation, using standard OpenAPI Specification. To access it, go to the url http://127.0.0.1:3000/docs . 
 
-![swagger documentation](docs/images/swagger.png)
+![swagger documentation](https://raw.githubusercontent.com/apiel/zigbee-api/master/docs/images/swagger.png)
 
 From this user interface, you can run some test queries, for example to change the state of a device:
 
-![swagger tryout](docs/images/swagger_tryout.png)
+![swagger tryout](https://raw.githubusercontent.com/apiel/zigbee-api/master/docs/images/swagger_tryout.png)
 
 ## GraphQL
 
 You can access the GraphQL playground under the url http://127.0.0.1:3000/graphql 
 
-![graphql playground](docs/images/graphql_playground.png)
+![graphql playground](https://raw.githubusercontent.com/apiel/zigbee-api/master/docs/images/graphql_playground.png)
 
 From there you can try your GraphQL queries:
 
