@@ -3,6 +3,7 @@ import * as zShepherdConverters from 'zigbee-shepherd-converters';
 import * as zclPacket from 'zcl-packet';
 import { get } from 'lodash';
 import { EventEmitter } from 'events';
+import { Client, ClientProxy, Transport, ClientMqtt } from '@nestjs/microservices';
 
 import { Shepherd } from './shepherd.factory';
 import { Device, DeviceService } from './device/device.service';
@@ -23,6 +24,15 @@ export const eventType = {
 export class ZigbeeService extends EventEmitter {
     private readonly logger = new Logger(ZigbeeService.name);
 
+    @Client({
+        transport: Transport.MQTT,
+        options: {
+            host: 'localhost',
+            port: 1883,
+        },
+    })
+    client: ClientProxy;
+
     constructor(
         @Inject('Shepherd') private shepherd: Shepherd,
         private deviceService: DeviceService,
@@ -42,6 +52,9 @@ export class ZigbeeService extends EventEmitter {
 
         const devices = this.deviceService.getDevices();
         this.logger.log(`Zigbee devices: ${JSON.stringify(devices, null, 4)}`);
+
+        await this.client.connect();
+        this.client.send<Device[]>('devices/list', devices);
 
         devices.forEach((device: Device) => {
             this.attachDevice(device);

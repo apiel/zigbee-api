@@ -1,6 +1,8 @@
 import { Controller, Get, Param, Res, HttpStatus, Post, Body } from '@nestjs/common';
-import { DeviceService, Device, DeviceModel } from '../zigbee/device/device.service';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { MessagePattern } from '@nestjs/microservices';
+
+import { DeviceService, Device, DeviceModel } from '../zigbee/device/device.service';
 import { ApiActionDto } from './api.action.dto';
 import { EventService, EventItem } from 'src/event/event.service';
 
@@ -11,6 +13,7 @@ export class ApiController {
         private readonly eventService: EventService,
     ) {}
 
+    @MessagePattern('devices')
     @ApiOkResponse({ description: 'Get the list of registered devices.'})
     @Get('devices')
     getDevices(): Device[] {
