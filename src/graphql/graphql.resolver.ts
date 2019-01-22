@@ -23,7 +23,7 @@ export class GraphqlResolver {
     onEvent = (type: string) => (payload: any) => {
         const events = {
             type,
-            payload: JSON.stringify(payload),
+            payload,
             time: (new Date()).toString(),
         };
         pubSub.publish('events', { events });
@@ -44,7 +44,7 @@ export class GraphqlResolver {
       const mappedModel = this.deviceService.getMappedModel(addr);
       return {
           device: mappedModel.device,
-          config: JSON.stringify(mappedModel.mappedModel),
+          config: mappedModel.mappedModel,
       };
     }
 
@@ -52,16 +52,15 @@ export class GraphqlResolver {
     getEvents() /*: EventItem[]*/ {
         return this.eventService.get().map(item => ({
             ...item,
-            payload: JSON.stringify(item.payload),
+            payload: item.payload,
             time: item.time.toString(),
         }));
     }
 
     @Mutation()
-    async sendAction(@Args('addr') addr: string, @Args('action') action: string): Promise<string> {
-        const data = JSON.parse(action);
-        const response = await this.deviceService.sendAction({ ...data, addr });
-        return JSON.stringify(response);
+    async sendAction(@Args('addr') addr: string, @Args('action') action: any): Promise<string> {
+        const response = await this.deviceService.sendAction({ ...action, addr });
+        return response;
     }
 
     @Subscription()

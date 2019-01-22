@@ -1,3 +1,5 @@
+scalar JSON
+
 type Query {
     getDevices: [Device]
     device(addr: ID!): Device
@@ -6,7 +8,7 @@ type Query {
 }
 
 type Mutation {
-    sendAction(addr: ID!, action: String!): String
+    sendAction(addr: ID!, action: JSON!): JSON
 }
 
 type Subscription {
@@ -15,7 +17,7 @@ type Subscription {
 
 type EventItem {
     type: String
-    payload: String
+    payload: JSON
     time: String
 }
 
@@ -34,5 +36,5 @@ type Device {
 
 type DeviceConfig {
     device: Device
-    config: String
+    config: JSON
 }

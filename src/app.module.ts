@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import * as GraphQLJSON from 'graphql-type-json';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigService } from './config/config.service';
@@ -16,7 +18,7 @@ import { EventModule } from './event/event.module';
         ApiModule,
         GraphQLModule.forRoot({
             typePaths: ['./**/*.graphql'],
-            // include: [GraphqlModule, GraphModule],
+            resolvers: { JSON: GraphQLJSON },
             installSubscriptionHandlers: true,
             definitions: {
                 path: `${__dirname}/../types/graphql.schema.d.ts`,

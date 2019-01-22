@@ -14,17 +14,17 @@ export class Device {
 
 export class DeviceConfig {
     device?: Device;
-    config?: string;
+    config?: JSON;
 }
 
 export class EventItem {
     type?: string;
-    payload?: string;
+    payload?: JSON;
     time?: string;
 }
 
 export abstract class IMutation {
-    abstract sendAction(addr: string, action: string): string | Promise<string>;
+    abstract sendAction(addr: string, action: string): JSON | Promise<JSON>;
 }
 
 export abstract class IQuery {
@@ -38,3 +38,5 @@ export abstract class IQuery {
 export abstract class ISubscription {
     abstract events(): EventItem | Promise<EventItem>;
 }
+
+export type JSON = any;
