@@ -21,7 +21,7 @@ import { EventModule } from './event/event.module';
             resolvers: { JSON: GraphQLJSON },
             installSubscriptionHandlers: true,
             definitions: {
-                path: `${__dirname}/../types/graphql.schema.d.ts`,
+                path: `${__dirname}/types/graphql.schema.ts`,
                 outputAs: 'class',
             },
         }),

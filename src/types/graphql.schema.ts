@@ -24,14 +24,18 @@ export class EventItem {
 }
 
 export abstract class IMutation {
-    abstract sendAction(addr: string, action: string): JSON | Promise<JSON>;
+    abstract sendAction(addr: string, action: JSON): JSON | Promise<JSON>;
 }
 
 export abstract class IQuery {
     abstract getDevices(): Device[] | Promise<Device[]>;
+
     abstract device(addr: string): Device | Promise<Device>;
+
     abstract getDeviceConfig(addr: string): DeviceConfig | Promise<DeviceConfig>;
+
     abstract getEvents(): EventItem[] | Promise<EventItem[]>;
+
     abstract temp__(): boolean | Promise<boolean>;
 }
 
