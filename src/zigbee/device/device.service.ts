@@ -81,6 +81,10 @@ export class DeviceService {
         return new Promise((resolve, reject) => {
             const callback = (error: Error, response: any) => {
                 if (error) {
+                    if (error.message === 'ccznp has not been initialized yet') {
+                        this.logger.error('Exit because ccznp has been deactivated.');
+                        process.exit();
+                    }
                     reject(error);
                 } else {
                     resolve(response);
@@ -112,4 +116,7 @@ export class DeviceService {
         const epId = device.epList[0];
         return {device, epId };
     }
+
+    // ToDo
+    // getState
 }
