@@ -1577,6 +1577,12 @@ debug@=3.1.0:
   dependencies:
     ms "2.0.0"
 
+debug@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
+  dependencies:
+    ms "^2.1.1"
+
 decamelize@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -5824,6 +5830,16 @@ ziee@^0.3.0:
   dependencies:
     busyman "^0.3.0"
     zcl-id "^0.2.0"
+
+zigbee-service@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/zigbee-service/-/zigbee-service-0.0.1.tgz#e016a3f38982be24b0376a88496433be2f5cb6b9"
+  dependencies:
+    debug "^4.1.1"
+    lodash "^4.17.11"
+    zcl-packet "git+https://github.com/Koenkk/zcl-packet.git#fbd8c936bbd4be0597ad3e934be0ca722b0128a6"
+    zigbee-shepherd "git+https://github.com/Koenkk/zigbee-shepherd.git#ce52ac4131e2a505af6197b4a26d2b5360e4eb80"
+    zigbee-shepherd-converters "^7.0.2"
 
 zigbee-shepherd-converters@^7.0.2:
   version "7.0.20"
