@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ZigbeeService, eventType } from 'src/zigbee/zigbee.service';
+import { eventType } from 'zigbee-service';
+
+import { ZigbeeService } from 'src/zigbee/zigbee.service';
 
 export interface EventItem {
     type: string;
