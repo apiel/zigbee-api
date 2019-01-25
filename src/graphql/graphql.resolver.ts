@@ -1,10 +1,12 @@
 import { Query, Resolver, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { eventType, Device } from 'zigbee-service';
 
-import { DeviceService, Device } from 'src/zigbee/device/device.service';
+
+import { DeviceService } from 'src/zigbee/device/device.service';
 import { EventService } from 'src/event/event.service';
 import { EventItem, DeviceConfig } from 'src/types/graphql.schema';
-import { ZigbeeService, eventType } from 'src/zigbee/zigbee.service';
+import { ZigbeeService } from 'src/zigbee/zigbee.service';
 
 const pubSub = new PubSub();
 
@@ -13,7 +15,7 @@ export class GraphqlResolver {
     constructor(
         private readonly deviceService: DeviceService,
         private readonly eventService: EventService,
-        private readonly zigbeeService: ZigbeeService,
+        zigbeeService: ZigbeeService,
     ) {
         zigbeeService.on(eventType.indMessage, this.onEvent(eventType.indMessage));
         zigbeeService.on(eventType.devIncoming, this.onEvent(eventType.devIncoming));

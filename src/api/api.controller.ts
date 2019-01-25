@@ -1,5 +1,7 @@
 import { Controller, Get, Param, Res, HttpStatus, Post, Body } from '@nestjs/common';
-import { DeviceService, Device, DeviceModel } from '../zigbee/device/device.service';
+import { DeviceModel, Device } from 'zigbee-service';
+
+import { DeviceService } from '../zigbee/device/device.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { ApiActionDto } from './api.action.dto';
 import { EventService, EventItem } from 'src/event/event.service';

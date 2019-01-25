@@ -1,5 +1,5 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
-import { ZigbeeService as ZSZigbeeService, Shepherd, Device } from 'zigbee-service';
+import { ZigbeeService as ZSZigbeeService, Shepherd } from 'zigbee-service';
 
 import { DeviceService } from './device/device.service';
 
