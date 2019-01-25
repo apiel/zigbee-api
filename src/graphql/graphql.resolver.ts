@@ -1,25 +1,22 @@
 import { Query, Resolver, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { eventType, Device } from 'zigbee-service';
+import { eventType, Device, ZigbeeAndDevice } from 'zigbee-service';
+import { Inject } from '@nestjs/common';
 
-
-import { DeviceService } from 'src/zigbee/device/device.service';
 import { EventService } from 'src/event/event.service';
 import { EventItem, DeviceConfig } from 'src/types/graphql.schema';
-import { ZigbeeService } from 'src/zigbee/zigbee.service';
 
 const pubSub = new PubSub();
 
 @Resolver('Graphql')
 export class GraphqlResolver {
     constructor(
-        private readonly deviceService: DeviceService,
+        @Inject('ZigbeeService') private readonly znd: ZigbeeAndDevice,
         private readonly eventService: EventService,
-        zigbeeService: ZigbeeService,
     ) {
-        zigbeeService.on(eventType.indMessage, this.onEvent(eventType.indMessage));
-        zigbeeService.on(eventType.devIncoming, this.onEvent(eventType.devIncoming));
-        zigbeeService.on(eventType.afIncomingMsg, this.onEvent(eventType.afIncomingMsg));
+        znd.zigbee.on(eventType.indMessage, this.onEvent(eventType.indMessage));
+        znd.zigbee.on(eventType.devIncoming, this.onEvent(eventType.devIncoming));
+        znd.zigbee.on(eventType.afIncomingMsg, this.onEvent(eventType.afIncomingMsg));
     }
 
     onEvent = (type: string) => (payload: any) => {
@@ -33,17 +30,17 @@ export class GraphqlResolver {
 
     @Query()
     getDevices(): Device[] {
-        return this.deviceService.getDevices();
+        return this.znd.device.getDevices();
     }
 
     @Query()
     device(@Args('addr') addr: string): Device {
-      return this.deviceService.getDevice(addr);
+      return this.znd.device.getDevice(addr);
     }
 
     @Query()
     getDeviceConfig(@Args('addr') addr: string): DeviceConfig {
-      const mappedModel = this.deviceService.getMappedModel(addr);
+      const mappedModel = this.znd.device.getMappedModel(addr);
       return {
           device: mappedModel.device,
           config: mappedModel.mappedModel,
@@ -61,7 +58,7 @@ export class GraphqlResolver {
 
     @Mutation()
     async sendAction(@Args('addr') addr: string, @Args('action') action: any): Promise<string> {
-        const response = await this.deviceService.sendAction({ ...action, addr });
+        const response = await this.znd.device.sendAction({ ...action, addr });
         return response;
     }
 

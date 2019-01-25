@@ -5831,9 +5831,9 @@ ziee@^0.3.0:
     busyman "^0.3.0"
     zcl-id "^0.2.0"
 
-zigbee-service@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/zigbee-service/-/zigbee-service-0.0.8.tgz#b76489613ba695f30f4bcb887552f88c353144b5"
+zigbee-service@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/zigbee-service/-/zigbee-service-0.0.9.tgz#20edf97252e3ce2223336a80186bd262168144db"
   dependencies:
     debug "^4.1.1"
     lodash "^4.17.11"

@@ -1,12 +1,12 @@
-import { useFactory, Shepherd, ShepherdConfig } from 'zigbee-service';
+import { ShepherdConfig, init, ZigbeeAndDevice } from 'zigbee-service';
 
 import { ConfigService } from '../config/config.service';
 import { Logger } from '@nestjs/common';
 
-export const shepherdFactory = {
-    provide: 'Shepherd',
+export const zigbeeServiceFactory = {
+    provide: 'ZigbeeService',
     inject: [ConfigService],
-    useFactory: (config: ConfigService): Shepherd => {
+    useFactory: (config: ConfigService): ZigbeeAndDevice => {
         const logger = new Logger('shepherdFactory');
         const DB_PATH = `${__dirname}/../../data/zigbee.db`;
         const SERIAL_PATH = config.get('SERIAL_PATH');
@@ -17,6 +17,6 @@ export const shepherdFactory = {
             SERIAL_PATH,
             ZIGBEE_PERMIT_JOIN,
         };
-        return useFactory(shepherdConfig, logger);
+        return init(shepherdConfig, logger);
     },
 };

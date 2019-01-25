@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ZigbeeService } from './zigbee.service';
-import { shepherdFactory } from './shepherd.factory';
+import { zigbeeServiceFactory } from './zigbee-service.factory';
 import { ConfigModule } from 'src/config/config.module';
-import { DeviceService } from './device/device.service';
 
 @Module({
-    providers: [ZigbeeService, shepherdFactory, DeviceService],
+    providers: [zigbeeServiceFactory],
     imports: [ConfigModule],
-    exports: [ZigbeeService, DeviceService],
+    exports: [zigbeeServiceFactory],
 })
 export class ZigbeeModule {}

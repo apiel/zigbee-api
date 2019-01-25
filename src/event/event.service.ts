@@ -1,7 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { eventType } from 'zigbee-service';
-
-import { ZigbeeService } from 'src/zigbee/zigbee.service';
+import { Injectable, Inject } from '@nestjs/common';
+import { eventType, ZigbeeAndDevice } from 'zigbee-service';
 
 export interface EventItem {
     type: string;
@@ -17,12 +15,12 @@ export class EventService {
 
     timerClean: NodeJS.Timeout;
 
-    constructor(zigbeeService: ZigbeeService) {
-        // zigbeeService.on(eventType.ind, console.log);
-        zigbeeService.on(eventType.indMessage, this.onEvent(eventType.indMessage));
-        zigbeeService.on(eventType.devIncoming, this.onEvent(eventType.devIncoming));
-        zigbeeService.on(eventType.afIncomingMsg, this.onEvent(eventType.afIncomingMsg));
-        zigbeeService.on(eventType.devices, this.onEvent(eventType.devices));
+    constructor(@Inject('ZigbeeService') znd: ZigbeeAndDevice) {
+        // znd.zigbee.on(eventType.ind, console.log);
+        znd.zigbee.on(eventType.indMessage, this.onEvent(eventType.indMessage));
+        znd.zigbee.on(eventType.devIncoming, this.onEvent(eventType.devIncoming));
+        znd.zigbee.on(eventType.afIncomingMsg, this.onEvent(eventType.afIncomingMsg));
+        znd.zigbee.on(eventType.devices, this.onEvent(eventType.devices));
     }
 
     onEvent = (type: string) => (payload: any) => {
