@@ -1,4 +1,4 @@
-import { ShepherdConfig, init, ZigbeeAndDevice } from 'zigbee-service';
+import { ShepherdConfig, ZigbeeAndDevice } from 'zigbee-service';
 
 import { ConfigService } from '../config/config.service';
 import { Logger } from '@nestjs/common';
@@ -17,6 +17,9 @@ export const zigbeeServiceFactory = {
             SERIAL_PATH,
             ZIGBEE_PERMIT_JOIN,
         };
-        return init(shepherdConfig, logger);
+        const zigbeeAndDevice = new ZigbeeAndDevice();
+        zigbeeAndDevice.init(shepherdConfig, logger);
+
+        return zigbeeAndDevice;
     },
 };

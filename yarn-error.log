@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add @types/graphql-subscriptions
+  /usr/local/bin/node /usr/local/bin/yarn add zigbee-service
 
 PATH: 
   /home/alex/.cargo/bin:/home/alex/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alex/dev/esp/esp-open-sdk/xtensa-lx106-elf/bin:/home/alex/dev/esp/esp-open-sdk/esptool:/home/alex/dev/esp/esp-open-sdk/xtensa-lx106-elf/bin:/home/alex/dev/esp/esp-open-sdk/esptool:/home/alex/dev/nrf5/gcc-arm-none-eabi-7-2017-q4-major/bin:/home/alex/dev/nrf5/nRF5x-Command-Line-Tools_9_7_2_Linux-x86_64/nrfjprog
@@ -16,7 +16,7 @@ Platform:
 npm manifest: 
   {
     "name": "zigbee-api",
-    "version": "0.0.0",
+    "version": "0.0.6",
     "description": "description",
     "author": "Alexandre Piel",
     "license": "MIT",
@@ -45,12 +45,14 @@ npm manifest:
       "graphql": "^14.1.1",
       "graphql-subscriptions": "^1.0.0",
       "graphql-tools": "^4.0.3",
+      "graphql-type-json": "^0.2.1",
       "lodash": "^4.17.11",
       "reflect-metadata": "^0.1.12",
       "rimraf": "^2.6.2",
       "rxjs": "^6.2.2",
       "typescript": "^3.0.1",
       "zcl-packet": "git+https://github.com/Koenkk/zcl-packet.git#fbd8c936bbd4be0597ad3e934be0ca722b0128a6",
+      "zigbee-service": "^0.0.9",
       "zigbee-shepherd": "git+https://github.com/Koenkk/zigbee-shepherd.git#ce52ac4131e2a505af6197b4a26d2b5360e4eb80",
       "zigbee-shepherd-converters": "^7.0.2"
     },
@@ -58,6 +60,7 @@ npm manifest:
       "@nestjs/testing": "^5.1.0",
       "@types/dotenv": "^6.1.0",
       "@types/express": "^4.16.0",
+      "@types/graphql-type-json": "^0.1.3",
       "@types/jest": "^23.3.1",
       "@types/lodash": "^4.14.120",
       "@types/node": "^10.7.1",
@@ -335,6 +338,16 @@ Lockfile:
       "@types/body-parser" "*"
       "@types/express-serve-static-core" "*"
       "@types/serve-static" "*"
+  
+  "@types/graphql-type-json@^0.1.3":
+    version "0.1.3"
+    resolved "https://registry.yarnpkg.com/@types/graphql-type-json/-/graphql-type-json-0.1.3.tgz#c4e6c0caccd907bf22baa73e76584433d7a0469b"
+    dependencies:
+      "@types/graphql" "*"
+  
+  "@types/graphql@*":
+    version "14.0.5"
+    resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.5.tgz#e696292fd2d77dc168b5b791710f83463aa39abd"
   
   "@types/jest@^23.3.1":
     version "23.3.12"
@@ -1661,6 +1674,12 @@ Lockfile:
     dependencies:
       ms "2.0.0"
   
+  debug@^4.1.1:
+    version "4.1.1"
+    resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
+    dependencies:
+      ms "^2.1.1"
+  
   decamelize@^1.1.1:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -2457,6 +2476,10 @@ Lockfile:
       deprecated-decorator "^0.1.6"
       iterall "^1.1.3"
       uuid "^3.1.0"
+  
+  graphql-type-json@^0.2.1:
+    version "0.2.1"
+    resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.2.1.tgz#d2c177e2f1b17d87f81072cd05311c0754baa420"
   
   graphql-upload@^8.0.2:
     version "8.0.4"
@@ -5905,6 +5928,16 @@ Lockfile:
       busyman "^0.3.0"
       zcl-id "^0.2.0"
   
+  zigbee-service@^0.0.9:
+    version "0.0.9"
+    resolved "https://registry.yarnpkg.com/zigbee-service/-/zigbee-service-0.0.9.tgz#20edf97252e3ce2223336a80186bd262168144db"
+    dependencies:
+      debug "^4.1.1"
+      lodash "^4.17.11"
+      zcl-packet "git+https://github.com/Koenkk/zcl-packet.git#fbd8c936bbd4be0597ad3e934be0ca722b0128a6"
+      zigbee-shepherd "git+https://github.com/Koenkk/zigbee-shepherd.git#ce52ac4131e2a505af6197b4a26d2b5360e4eb80"
+      zigbee-shepherd-converters "^7.0.2"
+  
   zigbee-shepherd-converters@^7.0.2:
     version "7.0.20"
     resolved "https://registry.yarnpkg.com/zigbee-shepherd-converters/-/zigbee-shepherd-converters-7.0.20.tgz#e6f73286e629ca16d41bf0291468eb5813b2bbcb"
@@ -5943,14 +5976,4 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/zstack-constants/-/zstack-constants-0.2.0.tgz#61546c8a96ff1302543d322ab1896dc797abd3f0"
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fgraphql-subscriptions: Not found
-      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:62027:18)
-      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:123011:22)
-      at Request.emit (events.js:182:13)
-      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:123994:10)
-      at Request.emit (events.js:182:13)
-      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:123914:12)
-      at Object.onceWrapper (events.js:273:13)
-      at IncomingMessage.emit (events.js:187:15)
-      at endReadableNT (_stream_readable.js:1092:12)
-      at process._tickCallback (internal/process/next_tick.js:63:19)
+  Error: ENOENT: no such file or directory, copyfile '/home/alex/.cache/yarn/v1/npm-ms-2.1.1-30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a/index.js' -> '/home/alex/dev/zigbee/zigbee-api/node_modules/zigbee-service/node_modules/ms/index.js'

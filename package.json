@@ -1,6 +1,6 @@
 {
   "name": "zigbee-api",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "description",
   "author": "Alexandre Piel",
   "license": "MIT",
@@ -36,7 +36,7 @@
     "rxjs": "^6.2.2",
     "typescript": "^3.0.1",
     "zcl-packet": "git+https://github.com/Koenkk/zcl-packet.git#fbd8c936bbd4be0597ad3e934be0ca722b0128a6",
-    "zigbee-service": "^0.0.9",
+    "zigbee-service": "^0.0.14",
     "zigbee-shepherd": "git+https://github.com/Koenkk/zigbee-shepherd.git#ce52ac4131e2a505af6197b4a26d2b5360e4eb80",
     "zigbee-shepherd-converters": "^7.0.2"
   },
