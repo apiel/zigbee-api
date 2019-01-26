@@ -5,6 +5,7 @@ type Query {
     device(addr: ID!): Device
     getDeviceConfig(addr: ID!): DeviceConfig
     getEvents: [EventItem]
+    getState(addr: ID!, cId: String, attrId: String): JSON
 }
 
 type Mutation {

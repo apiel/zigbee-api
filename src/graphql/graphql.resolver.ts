@@ -39,6 +39,15 @@ export class GraphqlResolver {
     }
 
     @Query()
+    getState(
+        @Args('addr') addr: string,
+        @Args('cId') cId: string,
+        @Args('attrId') attrId: string,
+    ): Promise<JSON> {
+      return this.znd.device.getState(addr, cId, attrId);
+    }
+
+    @Query()
     getDeviceConfig(@Args('addr') addr: string): DeviceConfig {
       const mappedModel = this.znd.device.getMappedModel(addr);
       return {
@@ -83,6 +92,7 @@ export class GraphqlResolver {
 //       manufName
 //       modelId
 //     }
+//     getState (addr: "0xd0cf5efffe3070a1", cId: "genOnOff", attrId: "onOff")
 //     getEvents {
 //       type
 //       payload

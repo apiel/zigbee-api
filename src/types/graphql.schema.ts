@@ -36,6 +36,8 @@ export abstract class IQuery {
 
     abstract getEvents(): EventItem[] | Promise<EventItem[]>;
 
+    abstract getState(addr: string, cId?: string, attrId?: string): JSON | Promise<JSON>;
+
     abstract temp__(): boolean | Promise<boolean>;
 }
 
